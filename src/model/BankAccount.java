@@ -1,26 +1,25 @@
 package model;
 import org.w3c.dom.CDATASection;
+import java.time.LocalDateTime;
 
+import java.time.LocalDate;
 import java.util.Date;
 public class BankAccount {
 
     private int id;
     private double balance;
     private double annualInterestRate;
-    private Date dateCreated;
+    private LocalDateTime dateCreated;
 
     public BankAccount() {
-        this.id = 0;
-        this.balance = 0.0;
-        this.annualInterestRate = 0.0;
-        this.dateCreated = new Date();
+        this.dateCreated = LocalDateTime.now();
     }
 
-    public BankAccount(int id, double balance) {
+    public BankAccount(int id, double balance, double annualInterestRate) {
         this.id = id;
         this.balance = balance;
-        this.annualInterestRate = 0.0;
-        this.dateCreated = new Date();
+        this.annualInterestRate = annualInterestRate;
+        this.dateCreated = LocalDateTime.now();
     }
 
     public int getID() {
@@ -33,7 +32,7 @@ public class BankAccount {
     public double getBalance() {
         return balance;
     }
-    public void setBalance() {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
     public double getAnnualInterestRate() {
@@ -42,7 +41,7 @@ public class BankAccount {
     public void setAnnualInterestRate(double annualInterestRate) {
         this.annualInterestRate = annualInterestRate;
     }
-    public Date getDateCreated() {
+    public LocalDateTime getDateCreated() {
         return dateCreated;
     }
     public double getMonthlyInterest() {
@@ -58,6 +57,9 @@ public class BankAccount {
     }
     public void deposit(double amount) {
         balance += amount;
+    }
+    public String toString() {
+        return "ID: " + id + ", Баланс: " + balance + ", Процентная ставка: " + annualInterestRate + ", Дата создания: " + dateCreated;
     }
 
 }
