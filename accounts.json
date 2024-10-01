@@ -1,0 +1,26 @@
+[
+    {
+        "dateCreated": "2024-09-30T15:01:50.050348800",
+        "balance": 100000,
+        "annualInterestRate": 0,
+        "id": 1
+    },
+    {
+        "dateCreated": "2024-09-30T15:01:50.050348800",
+        "balance": 30000,
+        "annualInterestRate": 0.05,
+        "id": 2
+    },
+    {
+        "dateCreated": "2024-09-30T15:01:50.050348800",
+        "balance": 52000,
+        "annualInterestRate": 0.05,
+        "id": 3
+    },
+    {
+        "dateCreated": "2024-09-30T15:02:03.829773300",
+        "balance": 40000,
+        "annualInterestRate": 0.05,
+        "id": 4
+    }
+]
