@@ -63,8 +63,18 @@ public class Main {
 
         System.out.println("| Присвоен новый ID: " + id + chertochki + "|");
         System.out.println("|------------------------------------------------------------|");
-        System.out.print("Введите начальный баланс: ");
-        double balance = scanner.nextDouble();
+        double balance = 0;
+        boolean validBalance = false;
+        while (!validBalance) {
+            System.out.println("Введите баланс: ");
+            balance = scanner.nextDouble();
+            if (balance < 10000) {
+                System.out.println("Положить на счет можно минимум: 10.000 рублей.");
+
+            } else {
+                validBalance = true;
+            }
+        }
 
         System.out.println("|------------------------------------------------------------|");
         System.out.println("| Введите годовую процентную ставку (например, 0.05 для 5%): |");
