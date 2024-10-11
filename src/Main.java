@@ -6,6 +6,10 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class Main {
+    private static final String WELCOME_MESSAGE = "| Добро пожаловать в Е-Банк. |";
+    private static final String MENU_HEADER = "|----------------------------|";
+    private static final String EXIT_MESSAGE = "| Рады, что были с нами! |";
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         AccountJSONHandler jsonHandler = new AccountJSONHandler();
@@ -13,28 +17,20 @@ public class Main {
 
         boolean running = true;
         while (running) {
-            System.out.println("|----------------------------|");
-            System.out.println("| Добро пожаловать в Е-Банк. |");
-            System.out.println("|----------------------------|");
-            System.out.println("| 1. Создать новый аккаунт   |");
-            System.out.println("| 2. Войти по ID в аккаунт   |");
-            System.out.println("| 3. Выход                   |");
-            System.out.println("|----------------------------|");
-
-            System.out.print("Выберите вариант: ");
-            int choice = scanner.nextInt();
+            displayMainMenu();
+            int choice = getUserChoice(scanner);
 
             switch (choice) {
                 case 1:
                     createNewAccount(scanner, jsonHandler, accounts);
                     break;
                 case 2:
-                    loginAccount(scanner, accounts);
+                    loginAccount(scanner, accounts, jsonHandler);
                     break;
                 case 3:
-                    System.out.println("|------------------------|");
-                    System.out.println("| Рады, что были с нами! |");
-                    System.out.println("|------------------------|");
+                    System.out.println(MENU_HEADER);
+                    System.out.println(EXIT_MESSAGE);
+                    System.out.println(MENU_HEADER);
                     jsonHandler.saveData(accounts);
                     running = false;
                     break;
@@ -47,52 +43,53 @@ public class Main {
         }
         scanner.close();
     }
+
+    private static void displayMainMenu() {
+        System.out.println(MENU_HEADER);
+        System.out.println(WELCOME_MESSAGE);
+        System.out.println(MENU_HEADER);
+        System.out.println("| 1. Создать новый аккаунт   |");
+        System.out.println("| 2. Войти по ID в аккаунт   |");
+        System.out.println("| 3. Выход                   |");
+        System.out.println(MENU_HEADER);
+        System.out.print("Выберите вариант: ");
+    }
+
     private static int generateNewId(List<BankAccount> accounts) {
-        return accounts.stream().mapToInt(BankAccount::getID).max().orElse(0) + 1;
+        return accounts.stream().mapToInt(BankAccount::getID).max().orElse(-1) + 1;
     }
 
     private static void createNewAccount(Scanner scanner, AccountJSONHandler accountJSONHandler, List<BankAccount> accounts) {
-
         int id = generateNewId(accounts);
         System.out.println("|------------------------------------------------------------|");
         System.out.println("| Регистрация                                                |");
         System.out.println("|------------------------------------------------------------|");
 
-        String idString = "Присвоен новый ID: " + id;
-        String chertochki = " ".repeat(60 - idString.length() - 1);
-
-        System.out.println("| Присвоен новый ID: " + id + chertochki + "|");
+        System.out.println("| Присвоен новый ID: " + id + " |");
         System.out.println("|------------------------------------------------------------|");
-        double balance = 0;
-        boolean validBalance = false;
-        while (!validBalance) {
-            System.out.println("Введите баланс: ");
-            balance = scanner.nextDouble();
-            if (balance < 10000) {
-                System.out.println("Положить на счет можно минимум: 10.000 рублей.");
 
-            } else {
-                validBalance = true;
-            }
-        }
+        double balance = getValidBalance(scanner);
 
-        System.out.println("|------------------------------------------------------------|");
-        System.out.println("| Введите годовую процентную ставку (например, 0.05 для 5%): |");
-        System.out.println("|------------------------------------------------------------|\n");
-
-        double annualInterestRate = getDoubleFromUser(scanner);
-
-        BankAccount newAccount = new BankAccount(id, balance, annualInterestRate);
+        BankAccount newAccount = new BankAccount(id, balance);
         accounts.add(newAccount);
         System.out.println("|------------------------------------------------------------|");
         System.out.println("| Аккаунт создан успешно!                                    |");
         System.out.println("|------------------------------------------------------------|");
         accountJSONHandler.saveData(accounts);
-
     }
-    private static void loginAccount(Scanner scanner, List<BankAccount> accounts) {
+
+    private static double getValidBalance(Scanner scanner) {
+        double balance;
+        do {
+            System.out.print("Введите баланс (минимум 10,000 рублей): ");
+            balance = getDoubleFromUser(scanner, "");
+        } while (balance < 10000);
+        return balance;
+    }
+
+    private static void loginAccount(Scanner scanner, List<BankAccount> accounts, AccountJSONHandler accountJSONHandler) {
         System.out.print("Введите ID аккаунта: ");
-        int id = scanner.nextInt();
+        int id = getUserChoice(scanner);
 
         Optional<BankAccount> existingAccount = accounts.stream()
                 .filter(acc -> acc.getID() == id).findFirst();
@@ -100,46 +97,109 @@ public class Main {
         if (existingAccount.isPresent()) {
             BankAccount account = existingAccount.get();
             System.out.println("|------------------------------------------------------------|");
-
-            String WelcomeID = "| Добро пожаловать, ID: " + account.getID();
-            String chertochki = " ".repeat(60 - WelcomeID.length() + 1);
-            System.out.println("| Добро пожаловать, ID: " + account.getID() + chertochki + "|");
-
+            System.out.println("| Добро пожаловать, ID: " + account.getID() + " |");
             System.out.println("|------------------------------------------------------------|");
 
-            String balance = "| Текущий баланс: " + account.getBalance();
-            chertochki = " ".repeat(60 - balance.length() + 1);
-            System.out.println("| Текущий баланс: " + account.getBalance() + chertochki + "|");
+            boolean loggedIn = true;
+            while (loggedIn) {
+                displayAccountMenu();
+                int choice = getUserChoice(scanner);
 
-            String InterestRate = "| Годовая процентная ставка: " + account.getAnnualInterestRate();
-            chertochki = " ".repeat(60 - InterestRate.length() + 1);
-            System.out.println("| Годовая процентная ставка: " + account.getAnnualInterestRate() + chertochki + "|");
-            System.out.println("|------------------------------------------------------------|");
-
+                switch (choice) {
+                    case 1:
+                        System.out.printf("| Текущий баланс: %.2f |\n", account.getBalance());
+                        break;
+                    case 2:
+                        handleWithdrawal(scanner, account, accounts, accountJSONHandler);
+                        break;
+                    case 3:
+                        handleDeposit(scanner, account, accounts, accountJSONHandler);
+                        break;
+                    case 4:
+                        handleInterest(scanner, account, accounts, accountJSONHandler);
+                        break;
+                    case 5:
+                        loggedIn = false;
+                        break;
+                    default:
+                        System.out.println("|-----------------------------------|");
+                        System.out.println("| Неверный выбор, попробуйте снова. |");
+                        System.out.println("|-----------------------------------|");
+                }
+            }
         } else {
             System.out.println("Аккаунт с таким ID не найден.");
         }
     }
-    private static double getDoubleFromUser(Scanner scanner)
-    {
-        String input = scanner.nextLine();
+
+    private static void displayAccountMenu() {
+        System.out.println("|----------------------------|");
+        System.out.println("| Основное меню.            |");
+        System.out.println("|----------------------------|");
+        System.out.println("| 1. Проверить баланс счета. |");
+        System.out.println("| 2. Снять со счета.        |");
+        System.out.println("| 3. Положить на счет.      |");
+        System.out.println("| 4. Положить деньги под процентную ставку. |");
+        System.out.println("| 4. Выход.                 |");
+        System.out.println("|----------------------------|");
+        System.out.print("Выберите вариант: ");
+    }
+
+    private static void handleWithdrawal(Scanner scanner, BankAccount account, List<BankAccount> accounts, AccountJSONHandler accountJSONHandler) {
+        System.out.print("Введите сумму, которую хотите снять с банковского счета: ");
+        double withdrawAmount = getDoubleFromUser(scanner, "");
+        if (withdrawAmount <= account.getBalance()) {
+            account.withdraw(withdrawAmount);
+            accountJSONHandler.saveData(accounts);
+            System.out.printf("Снятие %.2f выполнено. Ваш баланс: %.2f\n", withdrawAmount, account.getBalance());
+        } else {
+            System.out.println("Недостаточно средств для снятия.");
+        }
+    }
+
+    private static void handleDeposit(Scanner scanner, BankAccount account, List<BankAccount> accounts, AccountJSONHandler accountJSONHandler) {
+        System.out.print("Введите сумму, которую хотите положить на банковский счет: ");
+        double depositAmount = getDoubleFromUser(scanner, "");
+        account.deposit(depositAmount);
+        accountJSONHandler.saveData(accounts);
+        System.out.printf("Внесение %.2f выполнено. Ваш баланс: %.2f\n", depositAmount, account.getBalance());
+    }
+
+    private static void handleInterest(Scanner scanner, BankAccount account, List<BankAccount> accounts, AccountJSONHandler accountJSONHandler) {
+        account.applyMonthlyInterest();
+        accountJSONHandler.saveData(accounts); // Сохраняем изменения
+        System.out.printf("Начислены проценты. Ваш новый баланс: %.2f\n", account.getBalance());
+    }
+
+    private static double getDoubleFromUser(Scanner scanner, String prompt) {
+        String input;
         double value = 0;
         boolean validInput = false;
 
         while (!validInput) {
-            System.out.print("Введите значение (используйте запятую для дробной части): ");
-            input = scanner.nextLine().replace(",", ".");
-
-            try
-            {
-                value = Double.parseDouble(input); // Парсим введённое значение
-                validInput = true;  // Если парсинг успешен, выходим из цикла
-            } catch (NumberFormatException e)
-            {
+            if (!prompt.isEmpty()) {
+                System.out.print(prompt);
+            }
+            input = scanner.next().replace(",", ".");
+            try {
+                value = Double.parseDouble(input);
+                validInput = true;
+            } catch (NumberFormatException e) {
                 System.out.println("Ошибка: введите корректное число.");
             }
         }
         return value;
     }
 
+    private static int getUserChoice(Scanner scanner) {
+        while (true) {
+
+            if (scanner.hasNextInt()) {
+                return scanner.nextInt();
+            } else {
+                System.out.println("Ошибка: введите число.");
+                scanner.next();
+            }
+        }
+    }
 }
