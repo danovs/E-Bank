@@ -1,6 +1,39 @@
-[{
-    "dateCreated": "2024-10-11T18:56:33.604756200",
-    "balance": 10000,
-    "annualInterestRate": 0,
-    "id": 0
-}]
+[
+    {
+        "dateCreated": "2024-10-14T16:41:42.801532",
+        "balance": 19000,
+        "annualInterestRate": 0,
+        "name": "Даниил",
+        "id": 0,
+        "transactions": [
+            {
+                "date": "2024-10-14T16:41:42.803531200",
+                "amount": 5000,
+                "description": "Снятие со счета",
+                "type": "Withdrawal"
+            },
+            {
+                "date": "2024-10-14T16:41:42.803531200",
+                "amount": 12000,
+                "description": "Пополнение счета",
+                "type": "Deposit"
+            }
+        ]
+    },
+    {
+        "dateCreated": "2024-10-14T16:41:42.803531200",
+        "balance": 12000,
+        "annualInterestRate": 0.2,
+        "name": "10000",
+        "id": 1,
+        "transactions": []
+    },
+    {
+        "dateCreated": "2024-10-14T16:42:03.352538800",
+        "balance": 1320,
+        "annualInterestRate": 0.2,
+        "name": "Даниил",
+        "id": 2,
+        "transactions": []
+    }
+]
