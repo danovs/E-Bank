@@ -3,12 +3,11 @@ package model;
 import java.time.LocalDateTime;
 
 public class Transaction {
-    private LocalDateTime date; // Date of transaction
-    private String type;        // Type of transaction (Deposit or Withdrawal)
-    private double amount;      // Amount of transaction
-    private String description; // Description of the transaction
+    private LocalDateTime date;
+    private String type;
+    private double amount;
+    private String description;
 
-    // Constructor
     public Transaction(String type, double amount, String description) {
         this.date = LocalDateTime.now();
         this.type = type;
@@ -16,7 +15,7 @@ public class Transaction {
         this.description = description;
     }
 
-    // Getters
+
     public LocalDateTime getDate() {
         return date;
     }

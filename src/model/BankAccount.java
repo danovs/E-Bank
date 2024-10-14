@@ -7,15 +7,15 @@ import java.util.List;
 public class BankAccount {
 
     private int id;
-    private String name; // Name of the account holder
+    private String name;
     private double balance;
     private double annualInterestRate = 0.20;
     private LocalDateTime dateCreated;
-    private List<Transaction> transactions; // List to hold transactions
+    private List<Transaction> transactions;
 
     public BankAccount() {
         this.dateCreated = LocalDateTime.now();
-        this.transactions = new ArrayList<>(); // Initialize the transactions list
+        this.transactions = new ArrayList<>();
     }
 
     public BankAccount(int id, String name, double balance) {
@@ -24,10 +24,9 @@ public class BankAccount {
         this.balance = balance;
         this.annualInterestRate = 0.20;
         this.dateCreated = LocalDateTime.now();
-        this.transactions = new ArrayList<>(); // Initialize the transactions list
+        this.transactions = new ArrayList<>();
     }
 
-    // Getters and Setters
     public int getID() {
         return id;
     }
@@ -73,7 +72,7 @@ public class BankAccount {
     }
 
     public double calculateInterest(double amount) {
-        return amount * annualInterestRate; // Проценты за год
+        return amount * annualInterestRate;
     }
 
     public void applyMonthlyInterest() {
@@ -107,7 +106,7 @@ public class BankAccount {
         summary.append(String.format("Владелец:             %s\n", name));
         summary.append(String.format("ID:                   %d\n", id));
         summary.append(String.format("Баланс:               %.2f\n", balance));
-        summary.append(String.format("Процентная ставка:    %.2f%%\n", annualInterestRate * 100)); // Умножаем на 100 для правильного вывода
+        summary.append(String.format("Процентная ставка:    %.2f%%\n", annualInterestRate * 100));
         summary.append(String.format("Дата создания:        %s\n", dateCreated.toLocalDate() + " " + dateCreated.toLocalTime().withSecond(0).withNano(0)));
         summary.append("Транзакции:\n");
         summary.append(String.format("%-19s %-10s %-10s %s\n", "Дата и время", "Тип", "Сумма", "Описание"));
@@ -122,8 +121,6 @@ public class BankAccount {
 
         return summary.toString();
     }
-
-
 
     @Override
     public String toString() {
