@@ -132,6 +132,9 @@ public class Main {
                         System.out.println(account.displayAccountSummary());
                         break;
                     case 5:
+                        displayMaxBalanceAccount(accounts);
+                        break;
+                    case 6:
                         loggedIn = false;
                         break;
                     default:
@@ -153,7 +156,8 @@ public class Main {
         System.out.println("| 2. Снять со счета.        |");
         System.out.println("| 3. Положить на счет.      |");
         System.out.println("| 4. Показать сводку счета. |");
-        System.out.println("| 5. Выход.                 |");
+        System.out.println("| 5. Показать наибольший баланс. |");
+        System.out.println("| 6. Выход.                 |");
         System.out.println("|----------------------------|");
         System.out.print("Выберите вариант: ");
     }
@@ -216,6 +220,21 @@ public class Main {
                 System.out.println("Ошибка: введите число.");
                 scanner.next();
             }
+        }
+    }
+
+    private static void displayMaxBalanceAccount(List<BankAccount> accounts) {
+        Optional<BankAccount> maxBalanceAccount = accounts.stream()
+                .max((acc1, acc2) -> Double.compare(acc1.getBalance(), acc2.getBalance()));
+
+        if (maxBalanceAccount.isPresent()) {
+            BankAccount account = maxBalanceAccount.get();
+            System.out.println("|------------------------------------------------------------|");
+            System.out.printf("| Аккаунт с наибольшим балансом: %s (ID: %d) |\n", account.getName(), account.getID());
+            System.out.printf("| Баланс: %.2f |\n", account.getBalance());
+            System.out.println("|------------------------------------------------------------|");
+        } else {
+            System.out.println("| Список аккаунтов пуст. |");
         }
     }
 }

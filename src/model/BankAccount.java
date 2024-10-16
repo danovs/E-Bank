@@ -79,7 +79,7 @@ public class BankAccount {
         double interest = getMonthlyInterest();
         deposit(interest);
     }
-
+//функция снять деньги со счета
     public void withdraw(double amount) {
         if (amount <= balance) {
             balance -= amount;
@@ -88,18 +88,18 @@ public class BankAccount {
             System.out.println("Недостаточно средств.");
         }
     }
-
+//функция пополнить счет
     public void deposit(double amount) {
         balance += amount;
         recordTransaction("Deposit", amount, "Пополнение счета");
     }
-
+//функция записи транзакии
     private void recordTransaction(String type, double amount, String description) {
         Transaction transaction = new Transaction(type, amount, description);
         transactions.add(transaction);
         System.out.printf("Транзакция выполнена. Новый баланс: %.2f\n", balance);
     }
-
+//функция вывода данных по текущему пользователю
     public String displayAccountSummary() {
         StringBuilder summary = new StringBuilder();
         summary.append("\n");
