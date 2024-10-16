@@ -15,7 +15,7 @@ import java.util.List;
 public class AccountJSONHandler {
     private static final String FILE_PATH = "accounts.json";
 
-    // Load data from JSON file
+    // Загрузка данных с json
     public List<BankAccount> loadBankAccounts() {
         List<BankAccount> accounts = new ArrayList<>();
         try {
@@ -29,7 +29,7 @@ public class AccountJSONHandler {
                 bankAccount.setName(object.getString("name"));
                 bankAccount.setBalance(object.getDouble("balance"));
                 bankAccount.setAnnualInterestRate(object.getDouble("annualInterestRate"));
-                // Load transactions
+                // загрузка транзакций
                 JSONArray transactionArray = object.getJSONArray("transactions");
                 for (int j = 0; j < transactionArray.length(); j++) {
                     JSONObject transactionObject = transactionArray.getJSONObject(j);
@@ -47,7 +47,7 @@ public class AccountJSONHandler {
         return accounts;
     }
 
-    // Save data to JSON file
+    // Сохранение в json
     public void saveData(List<BankAccount> accounts) {
         JSONArray jsonArray = new JSONArray();
 
@@ -59,7 +59,7 @@ public class AccountJSONHandler {
             object.put("annualInterestRate", bankAccount.getAnnualInterestRate());
             object.put("dateCreated", bankAccount.getDateCreated().toString());
 
-            // Save transactions
+            // сохранение транзакций
             JSONArray transactionArray = new JSONArray();
             for (Transaction transaction : bankAccount.getTransactions()) {
                 JSONObject transactionObject = new JSONObject();
