@@ -15,7 +15,7 @@ import java.util.List;
 public class AccountJSONHandler {
     private static final String FILE_PATH = "accounts.json";
 
-    // Загрузка данных с json
+    // загрузка данных с json
     public List<BankAccount> loadBankAccounts() {
         List<BankAccount> accounts = new ArrayList<>();
         try {
@@ -47,7 +47,7 @@ public class AccountJSONHandler {
         return accounts;
     }
 
-    // Сохранение в json
+    // сохранение в json
     public void saveData(List<BankAccount> accounts) {
         JSONArray jsonArray = new JSONArray();
 
